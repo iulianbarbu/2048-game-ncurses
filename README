@@ -1,0 +1,98 @@
+
+
+
+		// DESPRE MACROU-URI	--------------------------------
+
+	In antetul fisierului sursa am definit o serie de culori pe care le-am initializat la inceputul functiei MAIN si pe care le-am folosit la colorarea celulelor si tabelei de joc.
+		
+		// DESPRE FUNCTII	--------------------------------
+
+	1. void afiseaza(*WINDOW[],int[][],int,int,int)
+		
+		- afiseaza in tabela grafica state-ul curent in care se afla jocul, in functie de mutarile efectuate.
+		- tine si evidenta culorilor corespunzatoare numerelor in momentul afisarii.
+
+	2. void afla_poz(int,int)
+		
+		- am avut nevoie la un moment dat sa fac corespondenta dintr-un vector de 16 elemente la o matrice de 16 elemente, asa ca a trebuit sa convertesc coordonatele matriceale in coordonate ordonate ale unui vector.
+
+	3. void random_populate1(int[][])
+	
+		- aceasta functie face initializarea random la inceputul jocului, umpland 2 celule ale tabelei de joc.
+
+	4. void random_populate2(int[][],*WINDOW[])
+		
+		- aceasta functie populeaza random tabela de joc in timpul jocului, dupa o mutare valida, intr-o celula aleasa aleatoriu dar care este goala.
+
+	5. void zero_matrix(int[][])
+	
+		- am avut nevoie sa umplu matrici cu 0, asa ca am facut o functie care face asta.
+
+	6. int misca_te_asa_cum_imi_place_mie(*WINDOW[],int[][],int[][],int,*WINDOW,*int)
+
+		- numele ales nu ma reprezinta, a fost o alegere total neinspirata, recunosc. 
+		- aceasta functie este responsabila pentru luarea deciziilor de mutare pe o directie trimisa ca parametru.
+		- verifica cat poate sa mute o casuta, se ocupa de unirea a doua celule, se ocupa de cazurile speciale si anume atunci cand printr-o mutare pe o directie se pot uni 4 casute, daca sunt pe acelasi/aceeasi rand/coloana, daca inainte de mutare fiecare casuta avea acelasi numar.
+		- functia returneaza 1 in cazul in care au avut loc mutari, si 0 in caz contrar. Aceste valori returnate mai le folosesc pentru a verifica spre exemplu o mutare valida/invalida, folosind si alte variabile, spre exemplu una care indica de cate ori s-a mutat o casuta pana la mutarea finala.
+	
+	7. int misca_te_fals(int[][],int[][],int)
+
+		- aceasta functie lucreaza in spate in comparatie cu precedenta si o folosesc pentru a determina acea mutare dupa o anumita perioada de timp care va elibera cele mai multe celule.
+		- aceasta returneaza 1 in cazul in care s-a efectuat o mutare care a unit doua celule si astfel a eliberat o celula, 0 in cazul in care s-a efectuat doar o simpla mutare fara unire, si -1 in cazul in care s-a efectuat o mutare invalida.
+
+	8. int MUTARE_ELIBERATOARE(int[][])
+	
+		- verifica cate celule se elibereaza efectuand mutari pe cele 4 directii.
+		- directia pe care se va efectua "mutarea eliberatoare" este aceea care va elibera numarul maxim de casute
+		- in cazul in care mutarile nu aduc nimic nou tabelei de joc, se va efectua o mutare pe una dintre directii.
+		- in cazul in care toate mutarile elibereaza acelasi numar de celule, se va efectua mutarea la stanga.	
+		- functia returneaza key-urile corespunzatoare directiilor de mutare care satisfac cel mai bine.	
+
+	9. int see_state(int[][])
+		
+		- aceasta functie parcurge matricea si verifica daca starea in care se afla nu mai accepta nicio viitoare mutare pe directiile posibile.
+		- in cazul in care nu mai exista mutari valide returneaza 0, in cazul in care mai exista returneaza 1.
+
+	10. int create_game_instance(int)
+	
+		- aici e partea dureroasa.
+		- aceasta functie este responsabila pentru creare unei instante de joc.
+		- daca argumentul intreg primit este 0 functia creeaza o noua instanta de joc, daca este 1 continua o instanta de joc salvata.
+		- functia este responsabila pentru reasezarea aparitiei grafice a jocului in cazul redimensionarii terminalului, iar daca terminalul primeste o dimensiune mica, afisajul este afectat intr-o masura corespunzatoare, lasand la latitudinea jucatorului redimensionarea terminalului asa incat jocul sa fie vizibil si sa ruleze in conditiile optime.		
+		- am facut abuz de while statements si de goto in cazurile in care utilizatorul foloseste meniului jocului, si in care apasa enter pe unul dintre itemurile meniului.
+		- apasand tasta (m) utilizatorul intra in meniul jocului, poate da resume la joc, poate restarta jocul, si poate iesi si salva state-ul in care a ramas jocul.
+		- mesajele afisate in cazurile in care utilizatorul castiga/pierde sunt "CONGRATS! YOU WIN! :-)" si "GAME OVER! SORRY! :-(", mesaje insotite de un alt meniu de unde utilizatorul poate reincepe o noua partida, sau poate iesi, evident fara salvarea state-ului.
+	
+	11. CONSIDERENTE ASUPRA FELULUI IN CARE ARATA CODUL
+		
+		- nu am efectuat comentarii pentru ca de as fi facut asta ar fi trebuit sa detaliez codul, ceea ce mi se pare nenecesar pentru scopul temei. Modul in care am programat putea evident fi facut in multe feluri posibile si recunosc ca modalitatile la care am apelat nu sunt cele mai elegante. 
+		- ce vreau sa punctez e ca am urmarit functionalitatea programului pe mai multe directii (ajustarea jocului odata cu redimensionarea terminalului atat in meniul principal cat si in jocul popriu zis, fapt ce a afectat continuitatea codului scris),  ci nu scrirea unui cod cat mai spatiat si usor de inteles.
+
+	// DESPRE MAIN()
+
+		- functia main nu are nimic special, afiseaza meniul de la inceput, care prezinta cele 3 optiuni specificate in tema, "New Game", "Resume Game", "Exit".
+		- am facut in asa fel incat la redimensionarea terminalului afisarea sa fie cat se poate de in regula.
+		- la prima intrare in joc "Resume Game" nu este functionabil, este nevoie de o intrare in prealabil in "New Game" si de o salvare a jocului astfel incat "Resume Game" sa functioneze.
+		
+
+
+	// DESPRE CERINTELE REZOLVATE
+
+	Am rezolvat cele 5 cerinte ale temei 2. Ca bonus am implementat meniurile din timpul jocului care faciliteaza navigarea si imbogateste functionalitatea jocului.
+
+	// PRECIZARI
+	
+	Jocul ruleaza optim pe rezolutia 40x120.
+	Terminalul este setat pe 256 de culori. 
+	Makefile-ul contine trei reguli:
+		- make (build)
+		- make run
+		- make clean
+
+
+
+
+
+
+
+
